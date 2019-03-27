@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PortfolioService, FirebaseService } from '@app/services';
+import { PortfolioService, FirebaseService, ConsoleService } from '@app/services';
 import { Post } from '@app/model/post';
 import { Subscription } from 'rxjs';
 import _ from 'lodash';
@@ -19,7 +19,8 @@ export class PortfolioComponent implements OnInit, OnDestroy {
 
   constructor(
     private portfolio: PortfolioService,
-    private firebase: FirebaseService
+    private firebase: FirebaseService,
+    private console: ConsoleService
   ) { }
 
   ngOnInit() {
@@ -33,33 +34,35 @@ export class PortfolioComponent implements OnInit, OnDestroy {
 
       setTimeout(() => {
         window.scrollTo(0, this.lastScroll);
-      }, 100);
+      }, 1);
 
     });
 
-    if ( this.firebase.permissionsCleared ) this.fetchPosts({ visible: true });
-    else {
+    this.console.log('Waiting for permissions...');
 
-      this.fsub = this.firebase.authenticated.subscribe(() => {
+    this.fsub = this.firebase.onPermissionsChanged.subscribe(permissions => {
 
-        this.fetchPosts({ visible: true });
+      if ( ! permissions ) return;
 
-      });
+      this.console.log('Permissions granted...');
 
-    }
+      this.fetchPosts({ visible: true });
+      this.fsub.unsubscribe();
+
+    });
 
   }
 
   ngOnDestroy() {
 
     if ( this.psub ) this.psub.unsubscribe();
-    if ( this.fsub ) this.fsub.unsubscribe();
+    if ( this.fsub && ! this.fsub.closed ) this.fsub.unsubscribe();
 
   }
 
   public fetchPosts({ visible }: { visible: boolean }): void {
 
-    if ( this.fetching || ! visible ) return;
+    if ( this.fetching || ! visible || ! this.firebase.hasPermissions ) return;
 
     this.fetching = this.portfolio.getPosts();
 

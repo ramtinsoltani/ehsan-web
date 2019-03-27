@@ -5,16 +5,16 @@ import 'firebase/auth';
 import 'firebase/storage';
 import cert from '@app/config/firebase.cert';
 import { Post, PostUrls } from '@app/model/post';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
 
-  public static readonly POSTS_FETCH_COUNT: number = 5;
-  public authenticated: Subject<void> = new Subject();
   private permissionsAllowed: boolean = false;
+  public static readonly POSTS_FETCH_COUNT: number = 5;
+  public onPermissionsChanged: BehaviorSubject<boolean> = new BehaviorSubject(this.permissionsAllowed);
 
   constructor() {
 
@@ -24,13 +24,15 @@ export class FirebaseService {
 
       if ( ! user ) {
 
+        this.permissionsAllowed = false;
+        this.onPermissionsChanged.next(this.permissionsAllowed);
         firebase.auth().signInAnonymously();
 
       }
       else {
 
         this.permissionsAllowed = true;
-        this.authenticated.next();
+        this.onPermissionsChanged.next(this.permissionsAllowed);
 
       }
 
@@ -66,7 +68,7 @@ export class FirebaseService {
 
   }
 
-  public get permissionsCleared(): boolean { return this.permissionsAllowed; }
+  public get hasPermissions(): boolean { return this.permissionsAllowed; }
 
   public getPosts(lastTimestamp?: number, count: number = FirebaseService.POSTS_FETCH_COUNT): Promise<Post[]> {
 
@@ -77,7 +79,12 @@ export class FirebaseService {
       let query = firebase.firestore().collection('posts').orderBy('timestamp', 'desc');
 
       // Query posts: set starting range (if provided)
-      if ( lastTimestamp ) query = query.startAt(lastTimestamp);
+      if ( lastTimestamp )  {
+
+        query = query.startAt(lastTimestamp);
+        count++;
+
+      }
 
       // Query posts: limit to count
       query = query.limit(count);

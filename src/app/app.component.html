@@ -1,3 +1,10 @@
+<div *ngIf="consoleVisible" class="shadow" (click)="closeConsole()">
+  <div class="console" (click)="stopConsoleClose($event)">
+    <h1>App Version {{ version }}</h1>
+    <hr noshade>
+    <div class="log" *ngFor="let log of logs" [ngClass]="{ error: log.error }"><span class="time">{{ log.timestamp | date:'mediumTime' }}</span> {{ log.message }}</div>
+  </div>
+</div>
 <app-header></app-header>
 <div class="content-container">
   <router-outlet></router-outlet>
