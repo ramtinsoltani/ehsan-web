@@ -1,7 +1,7 @@
 @import '../../../colors';
 
 @media (max-width: 991px) {
-  .post-title .options .option-button.compare-view {
+  .post-title .options .option-button {
     display: none !important;
   }
   .post-title {
@@ -81,6 +81,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: map-get($colors, gray-darker);
+    min-height: 70px;
     span.title {
       font-size: 22px;
       font-weight: 700;
