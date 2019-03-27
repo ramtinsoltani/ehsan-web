@@ -1,0 +1,57 @@
+@import '../../../colors';
+
+@media (max-width: 991px) {
+  :host {
+    min-height: 80px !important;
+    height: 80px !important;
+    padding: 0 30px !important;
+  }
+  nav a {
+    font-size: 18px !important;
+    padding: 0 20px !important;
+  }
+}
+
+:host {
+  width: 100%;
+  background-color: map-get($colors, gray-darker);
+  min-height: 120px;
+  height: 120px;
+  box-shadow: 0 3px 10px map-get($colors, shadow);
+  display: flex;
+  align-items: center;
+  padding: 0 100px;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0px;
+  z-index: 10;
+}
+
+img.logo {
+  width: auto;
+  height: calc(100% - 40px);
+}
+
+nav {
+  margin-left: 40px;
+  height: 100%;
+  display: flex;
+  outline: none;
+  a {
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    padding: 0 30px;
+    color: map-get($colors, text-light);
+    transition: color .25s ease-in-out;
+    &:hover {
+      color: map-get($colors, accent);
+    }
+    &.selected {
+      box-shadow: inset 0 -3px map-get($colors, accent);
+      color: map-get($colors, accent);
+    }
+  }
+}

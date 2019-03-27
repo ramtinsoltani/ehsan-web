@@ -1,0 +1,26 @@
+<div class="post-title">
+  <span class="title">{{ post.title }}</span>
+  <span class="options">
+    <span class="option-button compare-view" [ngClass]="{ selected: compareView }" (click)="setView(true)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+        <path d="M15.333,4.667H8.667A2.666,2.666,0,0,0,6,7.333V26a2.666,2.666,0,0,0,2.667,2.667h6.667v2.667H18V2H15.333Zm0,20H8.667l6.667-8Zm12-20H20.667V7.333h6.667V24.667l-6.667-8v12h6.667A2.666,2.666,0,0,0,30,26V7.333A2.666,2.666,0,0,0,27.333,4.667Z" transform="translate(-2 -0.667)"/>
+      </svg>
+    </span>
+    <span class="option-button" [ngClass]="{ selected: ! compareView }" (click)="setView(false)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+        <path d="M16.667,14h2.667v2.667H16.667ZM14,16.667h2.667v2.667H14Zm5.333,0H22v2.667H19.333ZM22,14h2.667v2.667H22ZM11.333,14H14v2.667H11.333Zm16-8H8.667A2.675,2.675,0,0,0,6,8.667V27.333A2.675,2.675,0,0,0,8.667,30H27.333A2.675,2.675,0,0,0,30,27.333V8.667A2.675,2.675,0,0,0,27.333,6ZM14,26H11.333V23.333H14Zm5.333,0H16.667V23.333h2.667Zm5.333,0H22V23.333h2.667Zm2.667-9.333H24.667v2.667h2.667V22H24.667V19.333H22V22H19.333V19.333H16.667V22H14V19.333H11.333V22H8.667V19.333h2.667V16.667H8.667v-8H27.333Z" transform="translate(-2 -2)"/>
+      </svg>
+    </span>
+  </span>
+</div>
+<div class="fade-view" *ngIf="! compareView">
+  <img class="image after" [src]="post.afterUrl" draggable="false">
+  <img class="image before" [ngClass]="{ show: fadeBefore }" [src]="post.beforeUrl" (click)="toggleFadeView()" draggable="false">
+</div>
+<div #viewContainer class="compare-view" *ngIf="compareView" (mousemove)="slideCropper($event)">
+  <img class="image after" [src]="post.afterUrl" draggable="false">
+  <div class="img-crop" [ngStyle]="{ 'background-image': getBeforeUrl(), width: cropperWidth + '%' }"></div>
+</div>
+<div class="post-description">
+  {{ post.description }}
+</div>

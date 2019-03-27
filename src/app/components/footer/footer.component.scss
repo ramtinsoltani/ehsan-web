@@ -1,0 +1,49 @@
+@import '../../../colors';
+
+@media (max-width: 991px) {
+  footer {
+    padding: 20px 30px 30px 30px !important;
+  }
+}
+
+:host {
+  width: 100%;
+  display: flex;
+}
+
+footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: 0 -3px 10px map-get($colors, shadow);
+  background-color: map-get($colors, gray-darker);
+  padding: 20px 100px 30px 100px;
+  .copyright {
+    text-align: center;
+  }
+  .social {
+    display: flex;
+    margin-bottom: 20px;
+    .social-button {
+      height: 60px;
+      width: 60px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      svg {
+        height: 24px;
+        width: 24px;
+      }
+      &:hover path {
+        fill: map-get($colors, accent);
+      }
+      path {
+        fill: map-get($colors, text-light);
+        transition: fill .25s ease-in-out;
+      }
+    }
+  }
+}
