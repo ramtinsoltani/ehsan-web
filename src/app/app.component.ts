@@ -21,6 +21,7 @@ export class AppComponent {
     this.console.onVisibilityChanged.subscribe(visibility => {
 
       this.consoleVisible = visibility;
+      window.document.body.classList.add('no-scroll');
 
     });
 
@@ -29,12 +30,13 @@ export class AppComponent {
       this.logs = logs;
 
     });
-
+    
   }
 
   public closeConsole(): void {
 
     this.console.toggleVisibility();
+    window.document.body.classList.remove('no-scroll');
 
   }
 
