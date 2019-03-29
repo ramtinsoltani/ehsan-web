@@ -1,0 +1,13 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+  padding: 0 50px;
+  box-sizing: border-box;
+}
+
+img {
+  margin-bottom: 10px;
+  width: 100%;
+  height: auto;
+}
