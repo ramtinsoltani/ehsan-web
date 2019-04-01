@@ -47,7 +47,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
       this.console.log('Permissions granted...');
 
       this.fetchPosts({ visible: true });
-      this.fsub.unsubscribe();
+      if ( this.fsub && ! this.fsub.closed ) this.fsub.unsubscribe();
 
     });
 

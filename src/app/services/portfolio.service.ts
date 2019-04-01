@@ -33,7 +33,7 @@ export class PortfolioService {
       })
       .catch(error => this.console.error(error));
 
-      fsub.unsubscribe();
+      if ( fsub && ! fsub.closed ) fsub.unsubscribe();
 
     });
 
